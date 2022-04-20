@@ -1,0 +1,24 @@
+<div class="bt-form">
+    <div class="bt-w-main">
+        <div class="bt-w-menu"><p class="bgw">概览</p></div>
+        <div class="bt-w-con pd15"><div class="plugin_body"></div></div>
+    </div>
+</div>
+<script type="text/javascript">
+function plugin_request(plugin_name, function_name, args, callback, timeout) {
+    $.ajax({
+        type:'POST',
+        url: '/plugin?action=a&s=' + function_name + '&name=' + plugin_name,
+        data: args,
+        timeout:timeout || 3600 * 1000,
+        success: function(res) {
+            if (!callback) return layer.msg(res.msg, { icon: res.status ? 1 : 2 });
+            return callback({...res, msg: JSON.parse(res.msg)});
+        }
+    });
+}
+
+plugin_request('srs_cloud', 'helloworld', {born:2013, category:'media'}, function (res) {
+    $('.plugin_body').html(`<pre>${JSON.stringify(res, null, 2)}</pre>`);
+});
+</script>
